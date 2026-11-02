@@ -1,0 +1,13 @@
+# Ignore everything by default so only the files explicitly allowed below can be committed.
+*
+
+# Keep this allowlist file
+!.gitignore
+
+# Python source code
+!modules/
+!modules/*.py
+!test_setup.py
+
+# Dependency list needed to recreate the environment
+!requirements.txt
