@@ -171,7 +171,8 @@ def main():
     parser.add_argument("--predictions-output", type=Path)
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--batch-size", type=int, default=2)
-    parser.add_argument("--max-target-tokens", type=int, default=80)
+    parser.add_argument("--max-target-tokens", type=int, default=160,
+                        help="Target text limit including BOS/EOS (default: 160); not a GPU hardware limit.")
     parser.add_argument("--vocabulary-size", type=int, default=512)
     parser.add_argument("--use-hand-landmarks", action="store_true")
     parser.add_argument("--seed", type=int, default=42)
@@ -190,6 +191,13 @@ def main():
         vocab_size=args.vocabulary_size,
     )
     id_to_token = [token for token, _ in sorted(vocabulary.items(), key=lambda item: item[1])]
+    for split, rows in (("train", train_rows), ("validation", val_rows)):
+        lengths = [len(encode_bpe(row["english_translation"], vocabulary, merges,
+                                 2 * len(row["english_translation"]) + 2)) for row in rows]
+        truncated = sum(length > args.max_target_tokens for length in lengths)
+        print(f"{split}: target limit {args.max_target_tokens} including BOS/EOS; "
+              f"{truncated}/{len(rows)} targets truncated ({truncated / len(rows):.2%}); "
+              f"longest target {max(lengths)} tokens", flush=True)
     pad_id = vocabulary[PAD_TOKEN]
     train_data = SequenceDataset(
         train_rows, vocabulary, merges, args.max_target_tokens, args.use_hand_landmarks
