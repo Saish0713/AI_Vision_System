@@ -99,7 +99,7 @@ Dataset files, trained model weights, generated outputs, and temporary files are
 - Recognition quality depends on the model, input conditions, and training data supplied locally.
 
 
-## 2026-11-03 — Pose direction and completed Stage 1 audit
+## Pose direction and completed Stage 1 audit
 
 This supersedes the earlier next step of tuning the 32-clip CTC model. We are moving to full-frame-rate body, hand and reduced-face keypoints. Existing RGB/hand data and experiment checkpoints are preserved.
 
@@ -129,7 +129,7 @@ Reproduce with the project interpreter:
 Next: await user confirmation for Stage 2's 20-clip extraction benchmark, then stop again to review time, storage, detection quality and handedness before subset extraction. The larger pose training stages have not started. The CTC feasibility failures must be resolved explicitly before enabling the auxiliary loss.
 
 
-## 2026-11-03 — Stage 2 pose benchmark completed; larger extraction paused
+## Stage 2 pose benchmark completed; larger extraction paused
 
 - User approved continuing to the 20-clip benchmark. MediaPipe 1.1.1 has no legacy Holistic API; implemented Tasks-based every-frame pose/hand/70-point face extraction with separate process-owned clip tracking, zero/mask missing data, validated resume and explicit errors. Existing RGB/CTC experiments are preserved.
 - 20 clips / 2,613 frames completed in 93.22 seconds with 4 workers; 1.12 MiB cache total. Mean worker time 17.35 s/clip; effective wall time 4.66 s/clip.
