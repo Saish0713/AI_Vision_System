@@ -4,11 +4,11 @@ A Python computer vision project for detecting hand landmarks and recognizing st
 
 The project also contains an experimental video-to-English sentence translation pipeline. That work is an early prototype and is not a usable translator.
 
+**Status: In progress**
+
+**Stack:** Python, MediaPipe, OpenCV, NumPy, PyTorch and CUDA.
+
 ## Features
-
-Latest sentence experiments: a fresh 32-clip attention model memorized all targets and responds to shuffled inputs. A CTC model reached 13/32 exact after 200 epochs, below the predeclared scaling threshold. The larger comparison has not started. See [experiment results](output/visual_grounding/RESULTS.md) for the protocol, limits and saved predictions.
-
-Sentence training now defaults to `--max-target-tokens 160`, including sentence markers, and reports truncation before training. This covers 99.85% of the v4 training targets. Existing checkpoints retain their saved limits. Commands explicitly specifying 80 override the new default.
 
 - Detects up to two hands and displays their landmarks.
 - Recognizes 24 static ASL letters: **A–I** and **K–Y**. **J** and **Z** are excluded because they require motion.
@@ -27,9 +27,11 @@ Model weights and datasets are intentionally not included in this repository. Yo
 
 ## Setup
 
-From the project directory, create and activate a virtual environment:
+Clone the repository, then create and activate a virtual environment:
 
 ```powershell
+git clone https://github.com/Saish0713/AI_Vision_System.git
+cd AI_Vision_System
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
@@ -98,6 +100,16 @@ Dataset files, trained model weights, generated outputs, and temporary files are
 - The sentence translation pipeline is a prototype and should not be treated as a working translator.
 - Recognition quality depends on the model, input conditions, and training data supplied locally.
 
+## Research notes
+
+Detailed experiment notes are retained below. Paths under `output/` refer to locally generated reports and assets, which are excluded from this repository.
+
+<details>
+<summary>Sentence experiments and dataset audits</summary>
+
+Latest sentence experiments: a fresh 32-clip attention model memorized all targets and responds to shuffled inputs. A CTC model reached 13/32 exact after 200 epochs, below the predeclared scaling threshold. The larger comparison has not started. See the local report `output/visual_grounding/RESULTS.md` for the protocol, limits and saved predictions.
+
+Sentence training now defaults to `--max-target-tokens 160`, including sentence markers, and reports truncation before training. This covers 99.85% of the v4 training targets. Existing checkpoints retain their saved limits. Commands explicitly specifying 80 override the new default.
 
 ## Pose direction and completed Stage 1 audit
 
@@ -139,3 +151,5 @@ Next: await user confirmation for Stage 2's 20-clip extraction benchmark, then s
 - Downloaded the missing official Google pose-lite (5,777,746 bytes) and face (3,758,596 bytes) model bundles. URLs/hashes: `output/pose/pose_model_downloads.json`. Existing hand model reused; no Python packages installed.
 - Full report and exact commands: `output/pose/benchmark/RESULTS.md`. Visuals: `output/pose/debug/pose_debug_contact_sheet.png`. Extraction entry point: `.\.venv\Scripts\python.exe -m modules.extract_pose_keypoints --benchmark --limit 20 --workers 4 --seed 42 --resume`. Completed reports are protected; interrupted jobs resume, and a fresh report needs a new `--output` directory.
 - Next proposed controlled experiment: pose-guided face-region crops on the same 20 clips, preserving current caches and checking coordinate remapping/visual quality. Await user approval. **No larger subset extraction or training has started.**
+
+</details>
